@@ -1,13 +1,9 @@
 ---
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { videoUrl } from '../lib/video-source';
+import { manifest, videoUrl, posterUrl } from '../lib/video-source';
 
-const videosDir = fileURLToPath(new URL('../../public/videos', import.meta.url));
-const VIDEO_EXT = new Set(['.mp4', '.mov', '.webm']);
-
-// Orden y etiqueta legible para cada carpeta de public/videos
+// Orden y etiqueta legible para cada carpeta de public/videos. Las claves
+// están en NFC; los nombres de carpeta del manifiesto vienen del filesystem
+// (normalmente NFD), por eso toda comparación normaliza a NFC primero.
 const CATEGORY_ORDER = [
   'EVENTOS',
   'DISEÑO DE INTERIORES',
@@ -25,6 +21,12 @@ const CATEGORY_LABELS: Record<string, string> = {
   '.': 'Eventos', // archivos sueltos en la raíz de /videos
 };
 
+function categoryFor(folder: string) {
+  const nfc = folder.normalize('NFC');
+  const key = Object.keys(CATEGORY_LABELS).find((k) => k.normalize('NFC') === nfc);
+  return key ? CATEGORY_LABELS[key] : folder;
+}
+
 interface GalleryItem {
   title: string;
   category: string;
@@ -36,35 +38,12 @@ function titleize(filename: string) {
   return filename.replace(/\.[^.]+$/, '').replace(/\s+/g, ' ').trim();
 }
 
-function makeItem(folder: string, file: string): GalleryItem {
-  const base = file.replace(/\.[^.]+$/, '');
-  const thumbPath = folder === '.' ? `/thumbs/${base}.jpg` : `/thumbs/${folder}/${base}.jpg`;
-  return {
-    title: titleize(file),
-    category: CATEGORY_LABELS[folder] ?? folder,
-    src: videoUrl(folder, file),
-    poster: encodeURI(thumbPath),
-  };
-}
-
-let items: GalleryItem[] = [];
-
-if (fs.existsSync(videosDir)) {
-  for (const entry of fs.readdirSync(videosDir, { withFileTypes: true })) {
-    if (entry.name.startsWith('.')) continue;
-
-    if (entry.isDirectory()) {
-      const files = fs.readdirSync(path.join(videosDir, entry.name));
-      for (const file of files) {
-        if (VIDEO_EXT.has(path.extname(file).toLowerCase())) {
-          items.push(makeItem(entry.name, file));
-        }
-      }
-    } else if (VIDEO_EXT.has(path.extname(entry.name).toLowerCase())) {
-      items.push(makeItem('.', entry.name));
-    }
-  }
-}
+const items: GalleryItem[] = manifest.map((entry) => ({
+  title: titleize(entry.file),
+  category: categoryFor(entry.folder),
+  src: videoUrl(entry),
+  poster: posterUrl(entry),
+}));
 
 const orderIndex = (cat: string) => {
   const key = Object.keys(CATEGORY_LABELS).find((k) => CATEGORY_LABELS[k] === cat) ?? cat;

@@ -1,40 +1,13 @@
 ---
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { videoUrl } from '../lib/video-source';
+import { findEntry, videoUrl, posterUrl } from '../lib/video-source';
 
-const videosDir = fileURLToPath(new URL('../../public/videos', import.meta.url));
-
-// Busca en una subcarpeta de public/videos el archivo cuyo nombre contenga
-// `match` (comparación en ASCII para evitar problemas de normalización de
-// tildes entre el literal del código y el nombre real en disco).
-//
-// Importante: para construir las URLs se usa el nombre de carpeta tal cual
-// lo devuelve `readdirSync` (no el literal `folderHint`). macOS resuelve
-// rutas de fs sin importar la forma de normalización Unicode (NFC/NFD), pero
-// el servidor de archivos estáticos de Astro/Vite exige coincidencia exacta
-// de bytes — así que si se usa el literal aquí, la carpeta puede "existir"
-// para fs y aun así devolver 404 al pedirla por HTTP.
+// Busca en el manifiesto (src/data/video-manifest.json) el archivo cuyo
+// nombre contenga `match`. No depende de que public/videos exista en el
+// entorno de build (en Vercel no está, se sirve desde afuera).
 function findVideo(folderHint: string, match: string) {
-  if (!fs.existsSync(videosDir)) return null;
-
-  const dirEntry = fs
-    .readdirSync(videosDir, { withFileTypes: true })
-    .find((e) => e.isDirectory() && e.name.normalize('NFC') === folderHint.normalize('NFC'));
-  if (!dirEntry) return null;
-
-  const folder = dirEntry.name;
-  const file = fs
-    .readdirSync(path.join(videosDir, folder))
-    .find((f) => f.toLowerCase().includes(match.toLowerCase()));
-  if (!file) return null;
-
-  const base = file.replace(/\.[^.]+$/, '');
-  return {
-    src: videoUrl(folder, file),
-    poster: encodeURI(`/thumbs/${folder}/${base}.jpg`),
-  };
+  const entry = findEntry(folderHint, match);
+  if (!entry) return null;
+  return { src: videoUrl(entry), poster: posterUrl(entry) };
 }
 
 const documentary = findVideo('certamen de belleza', 'rueda de prensa');

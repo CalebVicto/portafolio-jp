@@ -1,31 +1,43 @@
-import manifest from '../data/video-manifest.json';
+import manifestData from '../data/video-manifest.json';
 
-// Resuelve la URL de un video:
-// - Si PUBLIC_VIDEO_BASE_URL está definida, se sirve desde ahí. Como GitHub
-//   Releases no tiene carpetas, se busca el nombre de archivo "limpio" (sin
-//   tildes/espacios) en video-manifest.json y se arma:
-//   `${BASE}/${asset}` — ej. https://github.com/<owner>/<repo>/releases/download/<tag>/<asset>
-// - Si no está definida, cae de vuelta a los archivos locales en
-//   public/videos (uso en desarrollo).
-//
-// Las miniaturas (public/thumbs) son livianas y siempre se sirven en local,
-// sin importar esta variable.
+// video-manifest.json es la fuente de verdad de QUÉ videos existen (folder +
+// nombre real + nombre de asset "limpio" para GitHub Releases). Se genera a
+// partir de public/videos, pero una vez generado no depende de que esa
+// carpeta exista en el entorno de build (Vercel no la tiene, está en
+// .vercelignore) — así que tanto la Galería como los Proyectos Destacados
+// pueden listar todo (títulos, categorías, miniaturas) sin tocar el disco.
+export interface VideoManifestEntry {
+  folder: string; // "." para archivos sueltos en la raíz de public/videos
+  file: string;
+  asset: string;
+}
+
+export const manifest: VideoManifestEntry[] = manifestData;
+
 const BASE = import.meta.env.PUBLIC_VIDEO_BASE_URL?.replace(/\/+$/, '');
-const MANIFEST: Record<string, string> = manifest;
 
-export function videoUrl(folder: string, file: string): string {
-  const relPath = folder === '.' ? file : `${folder}/${file}`;
-
+// URL del video en sí: remota (BASE + nombre de asset) si PUBLIC_VIDEO_BASE_URL
+// está definida, o local (/videos/folder/file) para desarrollo.
+export function videoUrl(entry: VideoManifestEntry): string {
   if (BASE) {
-    const asset = MANIFEST[relPath];
-    if (!asset) {
-      throw new Error(
-        `video-source: no hay entrada en video-manifest.json para "${relPath}". ` +
-          `Agrégala o vuelve a generar el manifiesto.`
-      );
-    }
-    return `${BASE}/${asset}`;
+    return `${BASE}/${entry.asset}`;
   }
-
+  const relPath = entry.folder === '.' ? entry.file : `${entry.folder}/${entry.file}`;
   return encodeURI(`/videos/${relPath}`);
+}
+
+// La miniatura siempre es local (public/thumbs, liviano, sí va en git).
+export function posterUrl(entry: VideoManifestEntry): string {
+  const base = entry.file.replace(/\.[^.]+$/, '');
+  const relPath = entry.folder === '.' ? `${base}.jpg` : `${entry.folder}/${base}.jpg`;
+  return encodeURI(`/thumbs/${relPath}`);
+}
+
+export function findEntry(folderHint: string, match: string): VideoManifestEntry | null {
+  const wantedFolder = folderHint.normalize('NFC');
+  return (
+    manifest.find(
+      (e) => e.folder.normalize('NFC') === wantedFolder && e.file.toLowerCase().includes(match.toLowerCase())
+    ) ?? null
+  );
 }

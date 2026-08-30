@@ -1,30 +1,142 @@
-{
-  "DISEÑO DE INTERIORES/Dormitorio Principal  - San Luis.mp4": "dormitorio-principal-san-luis.mp4",
-  "DISEÑO DE INTERIORES/OBRA SAN LUIS - LAS LEÑAS (CON NARRACIÓN).mov": "obra-san-luis-las-lenas-con-narracion.mov",
-  "DISEÑO DE INTERIORES/PROYECTO K Y J ARQTIS.mp4": "proyecto-k-y-j-arqtis.mp4",
-  "DISEÑO DE INTERIORES/PROYECTO SAN LUIS - SALA Y TERRAZA (MÚSICA SIN COPYRIGHT).mp4": "proyecto-san-luis-sala-y-terraza-musica-sin-copyright.mp4",
-  "DISEÑO DE INTERIORES/Proyecto de Ventanilla - ARQTIS.mp4": "proyecto-de-ventanilla-arqtis.mp4",
-  "DISEÑO DE INTERIORES/Taller de ARQTIS.mp4": "taller-de-arqtis.mp4",
-  "EVENTOS/AGROFEST POLARIS.mp4": "agrofest-polaris.mp4",
-  "EVENTOS/DGR 2025 TRIUMPH.mp4": "dgr-2025-triumph.mp4",
-  "EVENTOS/ENTREGA 12 RZR XP1000.mp4": "entrega-12-rzr-xp1000.mp4",
-  "EVENTOS/EXPOMOTO RECAP.mp4": "expomoto-recap.mp4",
-  "EVENTOS/LANZAMIENTO OFICIAL DE LAS IMPARABLES.mp4": "lanzamiento-oficial-de-las-imparables.mp4",
-  "EVENTOS/LANZAMIENTO QJ MOTOR FINAL CONECTART.mp4": "lanzamiento-qj-motor-final-conectart.mp4",
-  "EVENTOS/RUTA 46 TRIUMPH.mp4": "ruta-46-triumph.mp4",
-  "EVENTOS/Triumph Weekend Ride .mp4": "triumph-weekend-ride.mp4",
-  "PAQUETES TURÍSTICOS/FULL DAY PARACAS E ICA.mp4": "full-day-paracas-e-ica.mp4",
-  "PAQUETES TURÍSTICOS/FULL DAY SAN MATEO DE OTAO.mp4": "full-day-san-mateo-de-otao.mp4",
-  "PAQUETES TURÍSTICOS/FULLDAY CHANCAY.mp4": "fullday-chancay.mp4",
-  "PAQUETES TURÍSTICOS/FULLDAY CHURÍN.mp4": "fullday-churin.mp4",
-  "PAQUETES TURÍSTICOS/FULLDAY CORDILLERA LA VIUDA Y CANTA.mp4": "fullday-cordillera-la-viuda-y-canta.mp4",
-  "PAQUETES TURÍSTICOS/FULLDAY LUNAHUANA Y CERRO AZUL.mp4": "fullday-lunahuana-y-cerro-azul.mp4",
-  "PAQUETES TURÍSTICOS/LUNAHUANÁ Y CERRO AZUL - EMABITOURS.mp4": "lunahuana-y-cerro-azul-emabitours.mp4",
-  "PAQUETES TURÍSTICOS/PARACAS Y HUACACHINA - EMABI TOURS.mp4": "paracas-y-huacachina-emabi-tours.mp4",
-  "Recap de cumpleaños - Caricatoons eventos.mp4": "recap-de-cumpleanos-caricatoons-eventos.mp4",
-  "automotriz/Presentación Tapicería Automotriz.mov": "presentacion-tapiceria-automotriz.mov",
-  "automotriz/Tapicería Automotriz - Funda Tipo Tapizado.mov": "tapiceria-automotriz-funda-tipo-tapizado.mov",
-  "certamen de belleza/Presentación del Miss Intercultural Turismo.mp4": "presentacion-del-miss-intercultural-turismo.mp4",
-  "certamen de belleza/Recopilatorio del trabajo con el Miss Intercultural Turismo.mp4": "recopilatorio-del-trabajo-con-el-miss-intercultural-turismo.mp4",
-  "certamen de belleza/Rueda de Prensa Avioma 2024.mp4": "rueda-de-prensa-avioma-2024.mp4"
-}
+[
+  {
+    "folder": ".",
+    "file": "Recap de cumpleaños - Caricatoons eventos.mp4",
+    "asset": "recap-de-cumpleanos-caricatoons-eventos.mp4"
+  },
+  {
+    "folder": "DISEÑO DE INTERIORES",
+    "file": "Dormitorio Principal  - San Luis.mp4",
+    "asset": "dormitorio-principal-san-luis.mp4"
+  },
+  {
+    "folder": "DISEÑO DE INTERIORES",
+    "file": "OBRA SAN LUIS - LAS LEÑAS (CON NARRACIÓN).mov",
+    "asset": "obra-san-luis-las-lenas-con-narracion.mov"
+  },
+  {
+    "folder": "DISEÑO DE INTERIORES",
+    "file": "PROYECTO K Y J ARQTIS.mp4",
+    "asset": "proyecto-k-y-j-arqtis.mp4"
+  },
+  {
+    "folder": "DISEÑO DE INTERIORES",
+    "file": "PROYECTO SAN LUIS - SALA Y TERRAZA (MÚSICA SIN COPYRIGHT).mp4",
+    "asset": "proyecto-san-luis-sala-y-terraza-musica-sin-copyright.mp4"
+  },
+  {
+    "folder": "DISEÑO DE INTERIORES",
+    "file": "Proyecto de Ventanilla - ARQTIS.mp4",
+    "asset": "proyecto-de-ventanilla-arqtis.mp4"
+  },
+  {
+    "folder": "DISEÑO DE INTERIORES",
+    "file": "Taller de ARQTIS.mp4",
+    "asset": "taller-de-arqtis.mp4"
+  },
+  {
+    "folder": "EVENTOS",
+    "file": "AGROFEST POLARIS.mp4",
+    "asset": "agrofest-polaris.mp4"
+  },
+  {
+    "folder": "EVENTOS",
+    "file": "DGR 2025 TRIUMPH.mp4",
+    "asset": "dgr-2025-triumph.mp4"
+  },
+  {
+    "folder": "EVENTOS",
+    "file": "ENTREGA 12 RZR XP1000.mp4",
+    "asset": "entrega-12-rzr-xp1000.mp4"
+  },
+  {
+    "folder": "EVENTOS",
+    "file": "EXPOMOTO RECAP.mp4",
+    "asset": "expomoto-recap.mp4"
+  },
+  {
+    "folder": "EVENTOS",
+    "file": "LANZAMIENTO OFICIAL DE LAS IMPARABLES.mp4",
+    "asset": "lanzamiento-oficial-de-las-imparables.mp4"
+  },
+  {
+    "folder": "EVENTOS",
+    "file": "LANZAMIENTO QJ MOTOR FINAL CONECTART.mp4",
+    "asset": "lanzamiento-qj-motor-final-conectart.mp4"
+  },
+  {
+    "folder": "EVENTOS",
+    "file": "RUTA 46 TRIUMPH.mp4",
+    "asset": "ruta-46-triumph.mp4"
+  },
+  {
+    "folder": "EVENTOS",
+    "file": "Triumph Weekend Ride .mp4",
+    "asset": "triumph-weekend-ride.mp4"
+  },
+  {
+    "folder": "PAQUETES TURÍSTICOS",
+    "file": "FULL DAY PARACAS E ICA.mp4",
+    "asset": "full-day-paracas-e-ica.mp4"
+  },
+  {
+    "folder": "PAQUETES TURÍSTICOS",
+    "file": "FULL DAY SAN MATEO DE OTAO.mp4",
+    "asset": "full-day-san-mateo-de-otao.mp4"
+  },
+  {
+    "folder": "PAQUETES TURÍSTICOS",
+    "file": "FULLDAY CHANCAY.mp4",
+    "asset": "fullday-chancay.mp4"
+  },
+  {
+    "folder": "PAQUETES TURÍSTICOS",
+    "file": "FULLDAY CHURÍN.mp4",
+    "asset": "fullday-churin.mp4"
+  },
+  {
+    "folder": "PAQUETES TURÍSTICOS",
+    "file": "FULLDAY CORDILLERA LA VIUDA Y CANTA.mp4",
+    "asset": "fullday-cordillera-la-viuda-y-canta.mp4"
+  },
+  {
+    "folder": "PAQUETES TURÍSTICOS",
+    "file": "FULLDAY LUNAHUANA Y CERRO AZUL.mp4",
+    "asset": "fullday-lunahuana-y-cerro-azul.mp4"
+  },
+  {
+    "folder": "PAQUETES TURÍSTICOS",
+    "file": "LUNAHUANÁ Y CERRO AZUL - EMABITOURS.mp4",
+    "asset": "lunahuana-y-cerro-azul-emabitours.mp4"
+  },
+  {
+    "folder": "PAQUETES TURÍSTICOS",
+    "file": "PARACAS Y HUACACHINA - EMABI TOURS.mp4",
+    "asset": "paracas-y-huacachina-emabi-tours.mp4"
+  },
+  {
+    "folder": "automotriz",
+    "file": "Presentación Tapicería Automotriz.mov",
+    "asset": "presentacion-tapiceria-automotriz.mov"
+  },
+  {
+    "folder": "automotriz",
+    "file": "Tapicería Automotriz - Funda Tipo Tapizado.mov",
+    "asset": "tapiceria-automotriz-funda-tipo-tapizado.mov"
+  },
+  {
+    "folder": "certamen de belleza",
+    "file": "Presentación del Miss Intercultural Turismo.mp4",
+    "asset": "presentacion-del-miss-intercultural-turismo.mp4"
+  },
+  {
+    "folder": "certamen de belleza",
+    "file": "Recopilatorio del trabajo con el Miss Intercultural Turismo.mp4",
+    "asset": "recopilatorio-del-trabajo-con-el-miss-intercultural-turismo.mp4"
+  },
+  {
+    "folder": "certamen de belleza",
+    "file": "Rueda de Prensa Avioma 2024.mp4",
+    "asset": "rueda-de-prensa-avioma-2024.mp4"
+  }
+]
