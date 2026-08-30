@@ -1,0 +1,95 @@
+---
+const links = [
+  { href: '#inicio', label: 'Inicio' },
+  { href: '#trabajo', label: 'Trabajo', active: true },
+  { href: '#galeria', label: 'Galería' },
+  { href: '#contacto', label: 'Contacto' },
+];
+---
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a href="#inicio" class="logo">JOSE PECHE</a>
+
+    <nav class="nav">
+      {
+        links.map((link) => (
+          <a href={link.href} class:list={['nav-link', { active: link.active }]}>
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <a href="#contacto" class="avatar" aria-label="Contacto">JP</a>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: rgba(10, 10, 10, 0.55);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+  }
+
+  .logo {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+  }
+
+  .nav {
+    display: flex;
+    gap: 32px;
+  }
+
+  .nav-link {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    transition: color 0.2s ease;
+  }
+
+  .nav-link:hover {
+    color: var(--text);
+  }
+
+  .nav-link.active {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+
+  @media (max-width: 700px) {
+    .nav {
+      display: none;
+    }
+  }
+</style>
