@@ -1,0 +1,56 @@
+---
+// Modal de video compartido: cualquier .card con data-src/data-title en la página
+// (Proyectos Destacados y Galería) abre este mismo reproductor.
+---
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Cerrar">✕</button>
+  <div class="lightbox-inner">
+    <video id="lightboxVideo" controls playsinline></video>
+    <p class="lightbox-title" id="lightboxTitle"></p>
+  </div>
+</div>
+
+<script>
+  const lightbox = document.getElementById('lightbox');
+  const lightboxVideo = document.getElementById('lightboxVideo') as HTMLVideoElement | null;
+  const lightboxTitle = document.getElementById('lightboxTitle');
+  const closeBtn = document.getElementById('lightboxClose');
+
+  function openLightbox(src: string, title: string) {
+    if (!lightbox || !lightboxVideo || !lightboxTitle) return;
+    lightboxVideo.src = src;
+    lightboxTitle.textContent = title;
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    lightboxVideo.play().catch(() => {});
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    if (!lightbox || !lightboxVideo) return;
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    lightboxVideo.pause();
+    lightboxVideo.removeAttribute('src');
+    lightboxVideo.load();
+    document.body.style.overflow = '';
+  }
+
+  // Delegación de eventos: funciona con cualquier .card presente en la página,
+  // incluidas las que se agreguen en otras secciones.
+  document.addEventListener('click', (e) => {
+    const card = (e.target as HTMLElement).closest<HTMLElement>('.card');
+    if (!card) return;
+    const { src, title } = card.dataset;
+    if (src && title) openLightbox(src, title);
+  });
+
+  closeBtn?.addEventListener('click', closeLightbox);
+  lightbox?.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>

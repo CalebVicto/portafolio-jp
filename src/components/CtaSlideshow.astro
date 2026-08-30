@@ -1,0 +1,97 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+// Usa las versiones optimizadas (livianas) generadas a partir de
+// public/background-video/*.jpg — ver public/background-video/optimized.
+const dir = fileURLToPath(new URL('../../public/background-video/optimized', import.meta.url));
+const IMAGE_EXT = new Set(['.jpg', '.jpeg', '.png', '.webp']);
+
+const photos = fs.existsSync(dir)
+  ? fs
+      .readdirSync(dir)
+      .filter((f) => IMAGE_EXT.has(path.extname(f).toLowerCase()))
+      .sort((a, b) => a.localeCompare(b, 'es', { numeric: true }))
+      .map((f) => encodeURI(`/background-video/optimized/${f}`))
+  : [];
+---
+
+{
+  photos.length > 0 && (
+    <div class="cta-slideshow" aria-hidden="true">
+      {photos.map((src, i) => (
+        <img src={src} class="cta-slide" class:list={[{ active: i === 0 }]} alt="" loading={i === 0 ? 'eager' : 'lazy'} />
+      ))}
+      <div class="cta-slideshow-overlay" />
+    </div>
+  )
+}
+
+<style>
+  .cta-slideshow {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .cta-slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    filter: grayscale(1) contrast(1.15) brightness(0.75);
+    transform: scale(1.06);
+    transition: opacity 0.18s linear;
+    will-change: opacity;
+  }
+
+  .cta-slide.active {
+    opacity: 1;
+    animation: cta-punch 0.55s ease-out;
+  }
+
+  .cta-slideshow-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      100deg,
+      rgba(10, 10, 10, 0.88) 0%,
+      rgba(10, 10, 10, 0.72) 45%,
+      rgba(10, 10, 10, 0.55) 100%
+    );
+  }
+
+  @keyframes cta-punch {
+    from {
+      transform: scale(1.12);
+    }
+    to {
+      transform: scale(1.06);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cta-slide {
+      transition: none;
+      animation: none !important;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  const slides = document.querySelectorAll<HTMLImageElement>('.cta-slide');
+  if (slides.length > 1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let current = 0;
+    setInterval(() => {
+      const next = (current + 1) % slides.length;
+      slides[current].classList.remove('active');
+      slides[next].classList.add('active');
+      current = next;
+    }, 480);
+  }
+</script>

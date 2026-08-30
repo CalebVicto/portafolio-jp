@@ -1,0 +1,284 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { videoUrl } from '../lib/video-source';
+
+const videosDir = fileURLToPath(new URL('../../public/videos', import.meta.url));
+const VIDEO_EXT = new Set(['.mp4', '.mov', '.webm']);
+
+// Orden y etiqueta legible para cada carpeta de public/videos
+const CATEGORY_ORDER = [
+  'EVENTOS',
+  'DISEÑO DE INTERIORES',
+  'PAQUETES TURÍSTICOS',
+  'automotriz',
+  'certamen de belleza',
+];
+
+const CATEGORY_LABELS: Record<string, string> = {
+  EVENTOS: 'Eventos',
+  'DISEÑO DE INTERIORES': 'Diseño de Interiores',
+  'PAQUETES TURÍSTICOS': 'Paquetes Turísticos',
+  automotriz: 'Automotriz',
+  'certamen de belleza': 'Certamen de Belleza',
+  '.': 'Eventos', // archivos sueltos en la raíz de /videos
+};
+
+interface GalleryItem {
+  title: string;
+  category: string;
+  src: string;
+  poster: string;
+}
+
+function titleize(filename: string) {
+  return filename.replace(/\.[^.]+$/, '').replace(/\s+/g, ' ').trim();
+}
+
+function makeItem(folder: string, file: string): GalleryItem {
+  const base = file.replace(/\.[^.]+$/, '');
+  const thumbPath = folder === '.' ? `/thumbs/${base}.jpg` : `/thumbs/${folder}/${base}.jpg`;
+  return {
+    title: titleize(file),
+    category: CATEGORY_LABELS[folder] ?? folder,
+    src: videoUrl(folder, file),
+    poster: encodeURI(thumbPath),
+  };
+}
+
+let items: GalleryItem[] = [];
+
+if (fs.existsSync(videosDir)) {
+  for (const entry of fs.readdirSync(videosDir, { withFileTypes: true })) {
+    if (entry.name.startsWith('.')) continue;
+
+    if (entry.isDirectory()) {
+      const files = fs.readdirSync(path.join(videosDir, entry.name));
+      for (const file of files) {
+        if (VIDEO_EXT.has(path.extname(file).toLowerCase())) {
+          items.push(makeItem(entry.name, file));
+        }
+      }
+    } else if (VIDEO_EXT.has(path.extname(entry.name).toLowerCase())) {
+      items.push(makeItem('.', entry.name));
+    }
+  }
+}
+
+const orderIndex = (cat: string) => {
+  const key = Object.keys(CATEGORY_LABELS).find((k) => CATEGORY_LABELS[k] === cat) ?? cat;
+  const i = CATEGORY_ORDER.indexOf(key);
+  return i === -1 ? CATEGORY_ORDER.length : i;
+};
+
+items.sort((a, b) => orderIndex(a.category) - orderIndex(b.category) || a.title.localeCompare(b.title, 'es'));
+
+const categories = ['Todos', ...Array.from(new Set(items.map((i) => i.category)))];
+---
+
+<section class="gallery" id="galeria">
+  <div class="gallery-spotlight" aria-hidden="true"></div>
+
+  <div class="wrap gallery-head">
+    <h2>Galería de Trabajos</h2>
+    <span class="eyebrow">02 // Video Archive</span>
+  </div>
+
+  <div class="wrap">
+    <div class="filters" role="tablist">
+      {
+        categories.map((cat, i) => (
+          <button class="filter-btn" class:list={[{ active: i === 0 }]} data-filter={cat} type="button">
+            {cat}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="grid">
+      {
+        items.map((item) => (
+          <button
+            class="card"
+            type="button"
+            data-category={item.category}
+            data-src={item.src}
+            data-title={item.title}
+          >
+            <img class="card-thumb" src={item.poster} alt={item.title} loading="lazy" />
+            <span class="card-play" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </span>
+            <span class="card-category mono">{item.category}</span>
+            <span class="card-title">{item.title}</span>
+          </button>
+        ))
+      }
+    </div>
+
+    {items.length === 0 && <p class="empty">Aún no hay videos en public/videos.</p>}
+  </div>
+</section>
+
+<style>
+  .gallery {
+    position: relative;
+    padding: 60px 0 60px;
+  }
+
+  .gallery-spotlight {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+    opacity: 0;
+    mix-blend-mode: overlay;
+    transition: opacity 0.4s ease;
+    background: radial-gradient(
+      550px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(255, 255, 255, 0.4),
+      transparent 65%
+    );
+  }
+
+  .gallery-spotlight.active {
+    opacity: 1;
+  }
+
+  .gallery > .wrap {
+    position: relative;
+    z-index: 1;
+  }
+
+  .gallery-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 46px;
+  }
+
+  .gallery-head h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(20px, 2.4vw, 24px);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 44px;
+  }
+
+  .filter-btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 9px 18px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .filter-btn:hover {
+    color: var(--text);
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .filter-btn.active {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .empty {
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  const filterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const cards = document.querySelectorAll<HTMLButtonElement>('#galeria .card');
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+
+      cards.forEach((card) => {
+        const show = filter === 'Todos' || card.dataset.category === filter;
+        card.style.display = show ? '' : 'none';
+      });
+    });
+  });
+
+  // Spotlight que sigue al cursor sobre el fondo de la galería, con un
+  // pequeño "lag" (lerp) para que se sienta suave en vez de instantáneo.
+  const gallerySection = document.getElementById('galeria');
+  const spotlight = document.querySelector<HTMLElement>('.gallery-spotlight');
+
+  if (gallerySection && spotlight && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let targetX = 0;
+    let targetY = 0;
+    let curX = 0;
+    let curY = 0;
+    let raf = 0;
+
+    const loop = () => {
+      curX += (targetX - curX) * 0.15;
+      curY += (targetY - curY) * 0.15;
+      spotlight.style.setProperty('--mx', `${curX}px`);
+      spotlight.style.setProperty('--my', `${curY}px`);
+      raf = requestAnimationFrame(loop);
+    };
+
+    gallerySection.addEventListener('pointermove', (e) => {
+      const rect = gallerySection.getBoundingClientRect();
+      targetX = e.clientX - rect.left;
+      targetY = e.clientY - rect.top;
+    });
+
+    gallerySection.addEventListener('pointerenter', (e) => {
+      const rect = gallerySection.getBoundingClientRect();
+      curX = targetX = e.clientX - rect.left;
+      curY = targetY = e.clientY - rect.top;
+      spotlight.classList.add('active');
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(loop);
+    });
+
+    gallerySection.addEventListener('pointerleave', () => {
+      spotlight.classList.remove('active');
+      cancelAnimationFrame(raf);
+    });
+  }
+</script>

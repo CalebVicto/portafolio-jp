@@ -1,36 +1,38 @@
 ---
-const columns = [
-  {
-    title: 'Workflow',
-    lines: ['DaVinci Resolve Studio', 'Adobe Premiere Pro'],
-  },
-  {
-    title: 'Cámaras',
-    lines: ['Arri Alexa Mini', 'Sony FX6'],
-  },
-  {
-    title: 'Estudio',
-    lines: ['Madrid, España', 'Disponible global'],
-  },
-  {
-    title: 'Contacto',
-    lines: ['hola@josepeche.com', '+34 600 000 000'],
-  },
-];
+import CtaSlideshow from './CtaSlideshow.astro';
 ---
 
 <footer class="site-footer" id="contacto">
-  <div class="wrap footer-grid">
-    {
-      columns.map((col) => (
-        <div class="footer-col">
-          <span class="eyebrow">{col.title}</span>
-          {col.lines.map((line) => (
-            <span class="footer-line">{line}</span>
-          ))}
-        </div>
-      ))
-    }
+  <div class="cta-band">
+    <CtaSlideshow />
+
+    <div class="wrap footer-cta">
+      <div class="cta-text">
+        <span class="eyebrow">03 // Let's Talk</span>
+        <h2>¿Tienes un proyecto<br />en mente?</h2>
+        <p>Cuéntame tu idea y te respondo en menos de 24 horas.</p>
+      </div>
+
+      <div class="cta-actions">
+        <a
+          class="btn-primary"
+          href="https://wa.me/51990313481?text=Hola%20Jose%2C%20quiero%20contarte%20sobre%20un%20proyecto"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Escríbeme por WhatsApp
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.48 1.34 5L2 22l5.2-1.36a9.94 9.94 0 0 0 4.84 1.23h.01c5.5 0 9.96-4.46 9.96-9.96S17.54 2 12.04 2Zm0 18.2h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.09.81.82-3-.19-.31a8.18 8.18 0 0 1-1.26-4.4c0-4.53 3.69-8.22 8.23-8.22 2.2 0 4.26.86 5.82 2.41a8.17 8.17 0 0 1 2.41 5.82c0 4.53-3.7 8.22-8.24 8.22Zm4.51-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.17.24-.64.8-.78.97-.14.16-.29.18-.53.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.39-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.16-.25.25-.41.08-.16.04-.31-.02-.43-.06-.13-.56-1.35-.77-1.84-.2-.49-.41-.42-.56-.43h-.48c-.16 0-.43.06-.65.31-.23.25-.85.83-.85 2.03s.87 2.36.99 2.52c.12.16 1.71 2.61 4.14 3.66.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29Z" />
+          </svg>
+        </a>
+        <a class="btn-secondary" href="/cv/jose-peche-cv.pdf" download>
+          Descargar CV
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14" />
+          </svg>
+        </a>
+      </div>
+    </div>
   </div>
 
   <div class="wrap footer-brand">
@@ -38,58 +40,115 @@ const columns = [
       <span class="eyebrow">Production &amp; Editing</span>
       <p class="brand-name">Jose Peche</p>
     </div>
-    <div class="socials">
-      <a href="#" aria-label="Vimeo">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-          <polygon points="5 3 19 12 5 21 5 3" />
-        </svg>
-      </a>
-      <a href="#" aria-label="Instagram">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-          <rect x="3" y="3" width="18" height="18" rx="5" />
-          <circle cx="12" cy="12" r="4" />
-          <circle cx="17.2" cy="6.8" r="0.6" fill="currentColor" stroke="none" />
-        </svg>
-      </a>
-      <a href="mailto:hola@josepeche.com" aria-label="Email">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-          <rect x="3" y="5" width="18" height="14" rx="2" />
-          <path d="M3 7l9 6 9-6" />
-        </svg>
-      </a>
+
+    <div class="brand-contact">
+      <div class="contact-lines">
+        <a href="mailto:josepeches@gmail.com" class="footer-line">josepeches@gmail.com</a>
+        <a href="tel:+51990313481" class="footer-line">+51 990 313 481</a>
+      </div>
+
+      <div class="socials">
+        <a href="https://www.tiktok.com/@peperomaaa" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M16.6 5.82c-.9-.62-1.55-1.6-1.75-2.72V3h-3.4v13.4a2.59 2.59 0 1 1-1.83-2.48v-3.45a5.98 5.98 0 0 0-1.02-.09A5.98 5.98 0 1 0 14.6 16.4V9.34a7.55 7.55 0 0 0 4.4 1.4V7.34a4.15 4.15 0 0 1-2.4-1.52Z" />
+          </svg>
+        </a>
+        <a href="https://www.instagram.com/pchjose/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <rect x="3" y="3" width="18" height="18" rx="5" />
+            <circle cx="12" cy="12" r="4" />
+            <circle cx="17.2" cy="6.8" r="0.6" fill="currentColor" stroke="none" />
+          </svg>
+        </a>
+      </div>
     </div>
   </div>
 
   <div class="wrap footer-bottom">
     <span>© 2026 Jose Peche. All rights reserved.</span>
-    <span>Built for cinema.</span>
+    <span>Built for JP.</span>
   </div>
 </footer>
 
 <style>
   .site-footer {
     border-top: 1px solid var(--border);
-    padding-top: 70px;
   }
 
-  .footer-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+  .cta-band {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .footer-cta {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
     gap: 40px;
-    padding-bottom: 70px;
+    padding: 150px 0;
   }
 
-  .footer-col {
+  .cta-text h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(38px, 5.6vw, 68px);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    margin-top: 16px;
+  }
+
+  .cta-text p {
+    margin-top: 20px;
+    color: var(--text-dim);
+    font-size: 17px;
+    max-width: 400px;
+  }
+
+  .cta-actions {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    align-items: flex-end;
+    gap: 16px;
+    flex-shrink: 0;
   }
 
-  .footer-line {
+  .btn-primary,
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: 0.04em;
-    color: var(--text-dim);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 18px 32px;
+    border-radius: 999px;
+    white-space: nowrap;
+    transition: opacity 0.2s ease, background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+
+  .btn-primary {
+    background: var(--text);
+    color: var(--bg);
+  }
+
+  .btn-primary:hover {
+    opacity: 0.85;
+  }
+
+  .btn-secondary {
+    font-weight: 600;
+    border: 2px solid var(--text);
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .btn-secondary:hover {
+    background: var(--text);
+    color: var(--bg);
+    transform: translateY(-1px);
   }
 
   .footer-brand {
@@ -105,6 +164,32 @@ const columns = [
     font-weight: 700;
     font-size: clamp(26px, 4vw, 40px);
     margin-top: 8px;
+  }
+
+  .brand-contact {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 16px;
+  }
+
+  .contact-lines {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
+
+  .footer-line {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    color: var(--text-dim);
+    transition: color 0.2s ease;
+  }
+
+  .footer-line:hover {
+    color: var(--text);
   }
 
   .socials {
@@ -135,15 +220,32 @@ const columns = [
   }
 
   @media (max-width: 760px) {
-    .footer-grid {
-      grid-template-columns: repeat(2, 1fr);
-      row-gap: 34px;
+    .footer-cta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 28px;
+    }
+
+    .cta-actions {
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      width: 100%;
+      justify-content: center;
     }
 
     .footer-brand {
       flex-direction: column;
       align-items: flex-start;
       gap: 20px;
+    }
+
+    .brand-contact,
+    .contact-lines {
+      align-items: flex-start;
     }
 
     .footer-bottom {

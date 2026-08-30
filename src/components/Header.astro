@@ -1,7 +1,7 @@
 ---
 const links = [
   { href: '#inicio', label: 'Inicio' },
-  { href: '#trabajo', label: 'Trabajo', active: true },
+  { href: '#trabajo', label: 'Servicios' },
   { href: '#galeria', label: 'Galería' },
   { href: '#contacto', label: 'Contacto' },
 ];
@@ -14,7 +14,7 @@ const links = [
     <nav class="nav">
       {
         links.map((link) => (
-          <a href={link.href} class:list={['nav-link', { active: link.active }]}>
+          <a href={link.href} class="nav-link">
             {link.label}
           </a>
         ))
@@ -93,3 +93,44 @@ const links = [
     }
   }
 </style>
+
+<script>
+  // Resalta en el nav el link de la sección visible en pantalla.
+  const navLinks = document.querySelectorAll<HTMLAnchorElement>('.nav-link');
+  const sections = Array.from(navLinks)
+    .map((link) => document.querySelector(link.getAttribute('href') ?? ''))
+    .filter((el): el is HTMLElement => el instanceof HTMLElement);
+
+  function setActive(id: string) {
+    navLinks.forEach((link) => {
+      link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+    });
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const visible = entries.filter((e) => e.isIntersecting);
+      if (visible.length === 0) return;
+      // De las secciones visibles en la franja central, toma la más cercana al top.
+      const top = visible.reduce((a, b) => (a.boundingClientRect.top < b.boundingClientRect.top ? a : b));
+      setActive(top.target.id);
+    },
+    { rootMargin: '-40% 0px -50% 0px', threshold: 0 }
+  );
+
+  sections.forEach((section) => observer.observe(section));
+
+  // La última sección puede ser más corta que la franja central del observer
+  // y nunca "cruzarla" al llegar al fondo de la página (no hay más scroll
+  // posible). Si estamos a menos de 2px del final, forzamos esa sección.
+  function checkBottom() {
+    const atBottom =
+      window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
+    if (atBottom && sections.length > 0) {
+      setActive(sections[sections.length - 1].id);
+    }
+  }
+
+  document.addEventListener('scroll', checkBottom, { passive: true });
+  checkBottom();
+</script>
