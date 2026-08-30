@@ -17,6 +17,8 @@ const videosDir = fileURLToPath(new URL('../../public/videos', import.meta.url))
 // de bytes — así que si se usa el literal aquí, la carpeta puede "existir"
 // para fs y aun así devolver 404 al pedirla por HTTP.
 function findVideo(folderHint: string, match: string) {
+  if (!fs.existsSync(videosDir)) return null;
+
   const dirEntry = fs
     .readdirSync(videosDir, { withFileTypes: true })
     .find((e) => e.isDirectory() && e.name.normalize('NFC') === folderHint.normalize('NFC'));
