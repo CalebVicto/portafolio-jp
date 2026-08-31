@@ -34,18 +34,27 @@ fi
 
 echo "Subiendo archivos (esto puede tardar varios minutos, hay un archivo de ~1.9GB)..."
 
+# `gh release upload archivo#Etiqueta` solo define una etiqueta visual, NO
+# renombra el asset: el nombre real que queda en la URL de descarga es el
+# basename del path local. Para que el asset final tenga el nombre "limpio"
+# del manifiesto, se arma un directorio temporal con symlinks (instantáneo,
+# sin duplicar los GB) nombrados como el asset, y se sube desde ahí.
+TMP_LINKS="$(mktemp -d)"
+trap 'rm -rf "$TMP_LINKS"' EXIT
+
 node -e '
-const fs = require("fs");
 const path = require("path");
 const manifest = require("./src/data/video-manifest.json");
 
-for (const [relPath, asset] of Object.entries(manifest)) {
-  const full = path.join("public/videos", relPath);
+for (const { folder, file, asset } of manifest) {
+  const relPath = folder === "." ? file : `${folder}/${file}`;
+  const full = path.resolve("public/videos", relPath);
   console.log(`${full}#${asset}`);
 }
 ' | while IFS='#' read -r filepath assetname; do
+  ln -sf "$filepath" "$TMP_LINKS/$assetname"
   echo "-> $assetname"
-  gh release upload "$TAG" "$filepath#$assetname" --repo "$REPO" --clobber
+  gh release upload "$TAG" "$TMP_LINKS/$assetname" --repo "$REPO" --clobber
 done
 
 echo ""
