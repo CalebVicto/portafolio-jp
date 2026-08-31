@@ -8,15 +8,16 @@ import { fileURLToPath } from 'node:url';
 const dir = fileURLToPath(new URL('../../public/background-video/optimized', import.meta.url));
 const IMAGE_EXT = new Set(['.jpg', '.jpeg', '.png', '.webp']);
 
-const photos = fs.existsSync(dir)
-  ? fs
-      .readdirSync(dir)
-      .filter((f) => IMAGE_EXT.has(path.extname(f).toLowerCase()))
-      .sort((a, b) => a.localeCompare(b, 'es', { numeric: true }))
-      .map((f) => encodeURI(`/background-video/optimized/${f}`))
-  : [];
+const dirExists = fs.existsSync(dir);
+const rawEntries = dirExists ? fs.readdirSync(dir) : [];
+
+const photos = rawEntries
+  .filter((f) => IMAGE_EXT.has(path.extname(f).toLowerCase()))
+  .sort((a, b) => a.localeCompare(b, 'es', { numeric: true }))
+  .map((f) => encodeURI(`/background-video/optimized/${f}`));
 ---
 
+<pre id="cta-debug" style="position:fixed;bottom:0;left:0;z-index:9999;background:red;color:white;font-size:10px;max-width:100vw;overflow:auto;padding:8px;margin:0;">{JSON.stringify({ dir, dirExists, rawEntries, photosCount: photos.length }, null, 2)}</pre>
 {
   photos.length > 0 && (
     <div class="cta-slideshow" aria-hidden="true">
