@@ -1,40 +1,22 @@
 ---
-import { findEntry, videoUrl, posterUrl } from '../lib/video-source';
-
-// Busca en el manifiesto (src/data/video-manifest.json) el archivo cuyo
-// nombre contenga `match`. No depende de que public/videos exista en el
-// entorno de build (en Vercel no está, se sirve desde afuera).
-function findVideo(folderHint: string, match: string) {
-  const entry = findEntry(folderHint, match);
-  if (!entry) return null;
-  return { src: videoUrl(entry), poster: posterUrl(entry) };
-}
-
-const documentary = findVideo('certamen de belleza', 'rueda de prensa');
-const fiction = findVideo('DISEÑO DE INTERIORES', 'obra san luis');
-const commercial = findVideo('automotriz', 'presentaci');
-
-const projects = [
+const services = [
   {
     index: '01',
     title: 'Campaña Documental',
-    description: 'Cobertura periodística en vivo de la Rueda de Prensa Avioma 2024, dentro de la campaña del Miss Intercultural Turismo.',
+    description: 'Cobertura periodística y documentales de campaña: registro en vivo de eventos, ruedas de prensa y procesos reales, con edición que prioriza el ritmo narrativo.',
     tags: ['Cobertura', 'Edición'],
-    media: documentary,
   },
   {
     index: '02',
     title: 'Cortometraje de Ficción',
-    description: 'Pieza narrada con guion propio: recorrido con voz en off por la obra San Luis — Las Leñas.',
+    description: 'Piezas narrativas con guion propio, dirección de arte y voz en off — desde la idea hasta el montaje final.',
     tags: ['Narración', 'Guion'],
-    media: fiction,
   },
   {
     index: '03',
     title: 'Edición Comercial',
-    description: 'Video de presentación de producto para marca de tapicería automotriz. Ritmo publicitario y montaje ágil.',
+    description: 'Videos de producto y campañas publicitarias para marcas: ritmo ágil, diseño sonoro y corrección de color pensados para convertir.',
     tags: ['Montaje', 'Producto'],
-    media: commercial,
   },
 ];
 ---
@@ -42,36 +24,22 @@ const projects = [
 <section class="projects" id="trabajo">
   <div class="wrap projects-head">
     <h2>Servicios</h2>
-    <span class="eyebrow">01 // Selected Works</span>
+    <span class="eyebrow">01 // What I Do</span>
   </div>
 
   <div class="wrap">
     <div class="projects-grid">
       {
-        projects.map((p) => (
-          <article class="project-item">
-            {p.media ? (
-              <button class="card" type="button" data-src={p.media.src} data-title={p.title}>
-                <img class="card-thumb" src={p.media.poster} alt={p.title} loading="lazy" />
-                <span class="card-play" aria-hidden="true">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </span>
-              </button>
-            ) : (
-              <div class="card card-fallback" />
-            )}
-
-            <div class="project-item-text">
-              <span class="eyebrow index">{p.index}.</span>
-              <h3>{p.title}</h3>
-              <p>{p.description}</p>
-              <div class="tags">
-                {p.tags.map((tag) => (
-                  <span class="tag">{tag}</span>
-                ))}
-              </div>
+        services.map((s) => (
+          <article class="service-item">
+            <span class="service-index">{s.index}</span>
+            <div class="service-rule" />
+            <h3>{s.title}</h3>
+            <p>{s.description}</p>
+            <div class="tags">
+              {s.tags.map((tag) => (
+                <span class="tag">{tag}</span>
+              ))}
             </div>
           </article>
         ))
@@ -82,14 +50,14 @@ const projects = [
 
 <style>
   .projects {
-    padding: 130px 0 60px;
+    padding: 130px 0 100px;
   }
 
   .projects-head {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    margin-bottom: 44px;
+    margin-bottom: 60px;
   }
 
   .projects-head h2 {
@@ -103,61 +71,65 @@ const projects = [
   .projects-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 32px;
+    gap: 48px;
   }
 
-  .project-item {
+  .service-item {
     display: flex;
     flex-direction: column;
+    gap: 14px;
   }
 
-  .project-item .card-thumb {
-    aspect-ratio: 4 / 3;
-  }
-
-  .card-fallback {
-    aspect-ratio: 4 / 3;
-    background: var(--bg-alt);
-  }
-
-  .project-item-text {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding-top: 18px;
-  }
-
-  .index {
+  .service-index {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.08em;
     color: var(--text-faint);
   }
 
-  .project-item h3 {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: clamp(19px, 1.8vw, 23px);
-    line-height: 1.15;
+  .service-rule {
+    height: 1px;
+    background: var(--border);
+    transition: background 0.3s ease;
   }
 
-  .project-item p {
+  .service-item:hover .service-rule {
+    background: rgba(255, 255, 255, 0.35);
+  }
+
+  .service-item h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(21px, 2vw, 26px);
+    line-height: 1.2;
+    margin-top: 4px;
+  }
+
+  .service-item p {
     color: var(--text-dim);
-    font-size: 13px;
-    line-height: 1.6;
+    font-size: 14px;
+    line-height: 1.7;
+    max-width: 340px;
   }
 
   .tags {
     display: flex;
     gap: 10px;
-    margin-top: 4px;
+    margin-top: 6px;
   }
 
   @media (max-width: 860px) {
     .projects {
-      padding: 100px 0 40px;
+      padding: 100px 0 60px;
     }
 
     .projects-grid {
       grid-template-columns: 1fr;
       gap: 44px;
+    }
+
+    .service-item p {
+      max-width: none;
     }
   }
 </style>
