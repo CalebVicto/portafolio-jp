@@ -59,7 +59,7 @@ const categories = ['Todos', ...Array.from(new Set(items.map((i) => i.category))
 <section class="gallery" id="galeria">
   <div class="gallery-spotlight" aria-hidden="true"></div>
 
-  <div class="wrap gallery-head">
+  <div class="wrap gallery-head reveal">
     <h2>Galería de Trabajos</h2>
     <span class="eyebrow">02 // Video Archive</span>
   </div>
@@ -77,9 +77,10 @@ const categories = ['Todos', ...Array.from(new Set(items.map((i) => i.category))
 
     <div class="grid">
       {
-        items.map((item) => (
+        items.map((item, i) => (
           <button
-            class="card"
+            class="card reveal"
+            data-reveal-delay={(i % 3) * 90}
             type="button"
             data-category={item.category}
             data-src={item.src}

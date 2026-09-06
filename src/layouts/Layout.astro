@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Preloader from '../components/Preloader.astro';
 
 interface Props {
   title?: string;
@@ -22,6 +23,36 @@ const {
     <title>{title}</title>
   </head>
   <body>
+    <Preloader />
     <slot />
   </body>
 </html>
+
+<script>
+  // Anima cualquier elemento .reveal de la página cuando entra en pantalla.
+  // Soporta un stagger opcional vía data-reveal-delay="ms" por elemento.
+  const targets = document.querySelectorAll<HTMLElement>('.reveal');
+
+  if (targets.length > 0) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      targets.forEach((el) => el.classList.add('in-view'));
+    } else {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const el = entry.target as HTMLElement;
+              const delay = el.dataset.revealDelay;
+              if (delay) el.style.setProperty('--reveal-delay', `${delay}ms`);
+              el.classList.add('in-view');
+              observer.unobserve(el);
+            }
+          });
+        },
+        { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }
+      );
+
+      targets.forEach((el) => observer.observe(el));
+    }
+  }
+</script>

@@ -1,0 +1,108 @@
+---
+---
+
+<div id="preloader" aria-hidden="true">
+  <span class="preloader-mark">JP</span>
+  <div class="preloader-bar"><span></span></div>
+</div>
+
+<style>
+  #preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+  }
+
+  #preloader.done {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .preloader-mark {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: 0.08em;
+    color: var(--text);
+    animation: preloader-pulse 1.1s ease-in-out infinite;
+  }
+
+  .preloader-bar {
+    width: 140px;
+    height: 1px;
+    background: var(--border);
+    overflow: hidden;
+  }
+
+  .preloader-bar span {
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: var(--text);
+    transform: translateX(-100%);
+    animation: preloader-fill 2s ease forwards;
+  }
+
+  @keyframes preloader-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.35;
+    }
+  }
+
+  @keyframes preloader-fill {
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .preloader-mark {
+      animation: none;
+    }
+    .preloader-bar span {
+      animation: none;
+      transform: translateX(0);
+    }
+  }
+</style>
+
+<script>
+  // Pantalla de carga de ~2s antes de mostrar el sitio. Bloquea el scroll
+  // mientras está visible y respeta prefers-reduced-motion (sin retraso).
+  const preloader = document.getElementById('preloader');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const MIN_DURATION = reduceMotion ? 0 : 2000;
+
+  document.documentElement.classList.add('is-loading');
+
+  const start = performance.now();
+
+  function hide() {
+    const elapsed = performance.now() - start;
+    const wait = Math.max(0, MIN_DURATION - elapsed);
+    setTimeout(() => {
+      preloader?.classList.add('done');
+      document.documentElement.classList.remove('is-loading');
+      window.dispatchEvent(new CustomEvent('preloader:done'));
+      setTimeout(() => preloader?.remove(), 600);
+    }, wait);
+  }
+
+  if (document.readyState === 'complete') {
+    hide();
+  } else {
+    window.addEventListener('load', hide);
+  }
+</script>

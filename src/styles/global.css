@@ -33,6 +33,12 @@ body {
   overflow-x: hidden;
 }
 
+html.is-loading,
+html.is-loading body {
+  overflow: hidden;
+  height: 100%;
+}
+
 img {
   display: block;
   max-width: 100%;
@@ -235,4 +241,43 @@ a {
   border-radius: 50%;
   font-size: 16px;
   cursor: pointer;
+}
+
+/* ---- Reveal-on-scroll (shared across sections) ----
+   Se usa `animation` (no `transition`) a propósito: varios elementos con
+   .reveal (como .card) ya definen su propia `transition` para el hover, y
+   una `transition` aquí pisaría esa declaración por completo (la propiedad
+   `transition` no se combina entre reglas, la última gana). `animation` es
+   un canal aparte que no choca con eso, y con fill-mode:backwards el estado
+   "oculto" se mantiene durante el delay sin dejar rastro después. */
+
+.reveal:not(.in-view) {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+.reveal.in-view {
+  animation: reveal-in 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+  animation-delay: var(--reveal-delay, 0s);
+}
+
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal:not(.in-view) {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal.in-view {
+    animation: none;
+  }
 }

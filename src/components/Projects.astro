@@ -22,7 +22,7 @@ const services = [
 ---
 
 <section class="projects" id="trabajo">
-  <div class="wrap projects-head">
+  <div class="wrap projects-head reveal">
     <h2>Servicios</h2>
     <span class="eyebrow">01 // What I Do</span>
   </div>
@@ -30,8 +30,8 @@ const services = [
   <div class="wrap">
     <div class="projects-grid">
       {
-        services.map((s) => (
-          <article class="service-item">
+        services.map((s, i) => (
+          <article class="service-item reveal" data-reveal-delay={i * 120}>
             <span class="service-index">{s.index}</span>
             <div class="service-rule" />
             <h3>{s.title}</h3>
