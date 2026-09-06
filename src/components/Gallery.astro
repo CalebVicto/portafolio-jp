@@ -85,14 +85,19 @@ const categories = ['Todos', ...Array.from(new Set(items.map((i) => i.category))
             data-src={item.src}
             data-title={item.title}
           >
-            <img class="card-thumb" src={item.poster} alt={item.title} loading="lazy" />
-            <span class="card-play" aria-hidden="true">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            </span>
-            <span class="card-category mono">{item.category}</span>
-            <span class="card-title">{item.title}</span>
+            <div class="card-thumb-wrap">
+              <img class="card-thumb" src={item.poster} alt={item.title} loading="lazy" />
+              <div class="card-thumb-fade" />
+              <span class="card-play" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </span>
+            </div>
+            <div class="card-body">
+              <span class="card-category mono">{item.category}</span>
+              <span class="card-title">{item.title}</span>
+            </div>
           </button>
         ))
       }
