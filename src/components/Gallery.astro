@@ -57,6 +57,7 @@ const categories = ['Todos', ...Array.from(new Set(items.map((i) => i.category))
 ---
 
 <section class="gallery" id="galeria">
+  <div class="gallery-dots" aria-hidden="true"></div>
   <div class="gallery-spotlight" aria-hidden="true"></div>
 
   <div class="wrap gallery-head reveal">
@@ -111,7 +112,21 @@ const categories = ['Todos', ...Array.from(new Set(items.map((i) => i.category))
 <style>
   .gallery {
     position: relative;
-    padding: 60px 0 60px;
+    padding: 110px 0 100px;
+    background: var(--bg-alt);
+    border-top: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .gallery-dots {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.6;
+    background-image: radial-gradient(var(--border) 1.5px, transparent 1.5px);
+    background-size: 28px 28px;
+    mask-image: radial-gradient(70% 60% at 50% 0%, rgba(0, 0, 0, 0.7), transparent 85%);
   }
 
   .gallery-spotlight {

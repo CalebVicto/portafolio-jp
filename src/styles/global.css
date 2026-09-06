@@ -3,6 +3,7 @@
 :root {
   --bg: #0a0a0a;
   --bg-alt: #0e0e0e;
+  --surface: #161616;
   --border: rgba(255, 255, 255, 0.08);
   --text: #f2f1ec;
   --text-dim: #8f8f89;
@@ -50,9 +51,9 @@ a {
 }
 
 .wrap {
-  max-width: 1240px;
+  max-width: 1480px;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 0 48px;
 }
 
 .mono {
@@ -93,7 +94,7 @@ a {
   position: relative;
   display: flex;
   flex-direction: column;
-  background: var(--bg-alt);
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 14px;
   overflow: hidden;

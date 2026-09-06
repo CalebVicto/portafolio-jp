@@ -22,6 +22,9 @@ const services = [
 ---
 
 <section class="projects" id="trabajo">
+  <div class="projects-grain" aria-hidden="true"></div>
+  <div class="projects-glow" aria-hidden="true"></div>
+
   <div class="wrap projects-head reveal">
     <h2>Servicios</h2>
     <span class="eyebrow">01 // What I Do</span>
@@ -50,7 +53,39 @@ const services = [
 
 <style>
   .projects {
+    position: relative;
     padding: 130px 0 100px;
+    overflow: hidden;
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+  }
+
+  .projects-grain {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image: linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 120px 120px;
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.6), transparent 75%);
+  }
+
+  .projects-glow {
+    position: absolute;
+    top: -220px;
+    right: -160px;
+    z-index: 0;
+    width: 560px;
+    height: 560px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.06), transparent 70%);
+    pointer-events: none;
+  }
+
+  .projects > .wrap {
+    position: relative;
+    z-index: 1;
   }
 
   .projects-head {
@@ -75,9 +110,21 @@ const services = [
   }
 
   .service-item {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 14px;
+    padding: 8px 8px 8px 0;
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .service-item:not(:first-child) {
+    border-left: 1px solid var(--border);
+    padding-left: 24px;
+  }
+
+  .service-item:hover {
+    transform: translateY(-4px);
   }
 
   .service-index {
@@ -126,6 +173,11 @@ const services = [
     .projects-grid {
       grid-template-columns: 1fr;
       gap: 44px;
+    }
+
+    .service-item:not(:first-child) {
+      border-left: none;
+      padding-left: 0;
     }
 
     .service-item p {
