@@ -1,0 +1,94 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+---
+
+<Layout title="Página no encontrada — Jose Peche" description="Esta página no existe.">
+  <Header />
+
+  <section class="not-found">
+    <div class="not-found-glow" aria-hidden="true"></div>
+
+    <div class="wrap not-found-content">
+      <span class="eyebrow">Error 404</span>
+      <h1>Esta escena<br />no está en el corte final.</h1>
+      <p>La página que buscas no existe o fue movida.</p>
+
+      <a class="btn-primary" href="/">
+        Volver al inicio
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
+      </a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .not-found {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding-top: 72px;
+  }
+
+  .not-found-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 700px;
+    height: 700px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.05), transparent 70%);
+    pointer-events: none;
+  }
+
+  .not-found-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 18px;
+  }
+
+  .not-found h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(32px, 5.5vw, 58px);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    max-width: 640px;
+  }
+
+  .not-found p {
+    color: var(--text-dim);
+    font-size: 16px;
+    max-width: 400px;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 15px 28px;
+    border-radius: 999px;
+    background: var(--text);
+    color: var(--bg);
+    white-space: nowrap;
+    transition: opacity 0.2s ease;
+  }
+
+  .btn-primary:hover {
+    opacity: 0.85;
+  }
+</style>
