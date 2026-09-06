@@ -2,12 +2,13 @@
 ---
 
 <section class="hero" id="inicio">
-  <img
-    class="hero-bg"
-    id="heroBg"
-    src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1920&q=80&auto=format&fit=crop"
-    alt="Proyector de cine en un cuarto oscuro"
-  />
+  <div class="hero-bg-wrap" id="heroBgWrap">
+    <img
+      class="hero-bg"
+      src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1920&q=80&auto=format&fit=crop"
+      alt="Proyector de cine en un cuarto oscuro"
+    />
+  </div>
   <div class="hero-overlay"></div>
 
   <div class="wrap hero-content" id="heroContent">
@@ -48,15 +49,37 @@
     overflow: hidden;
   }
 
-  .hero-bg {
+  .hero-bg-wrap {
     position: absolute;
     inset: 0;
+    overflow: hidden;
+    will-change: transform;
+  }
+
+  .hero-bg {
     width: 100%;
     height: 100%;
     object-fit: cover;
     filter: grayscale(0.3) brightness(0.6);
     transform: scale(1.15);
-    will-change: transform;
+    transform-origin: center;
+    animation: hero-kenburns 22s ease-in-out infinite alternate;
+    animation-delay: 2.8s;
+  }
+
+  @keyframes hero-kenburns {
+    from {
+      transform: scale(1.15) translate(0, 0);
+    }
+    to {
+      transform: scale(1.32) translate(-1.5%, -1.5%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-bg {
+      animation: none;
+    }
   }
 
   .hero-overlay {
@@ -228,7 +251,7 @@
 
 <script>
   const heroContent = document.getElementById('heroContent');
-  const heroBg = document.getElementById('heroBg');
+  const heroBgWrap = document.getElementById('heroBgWrap');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Dispara la entrada del hero apenas termina el preloader (o de inmediato
@@ -242,12 +265,14 @@
   window.addEventListener('preloader:done', playIntro, { once: true });
   setTimeout(playIntro, 2600);
 
-  // Parallax sutil del fondo al hacer scroll.
-  if (heroBg && !reduceMotion) {
+  // Parallax sutil del fondo al hacer scroll (en el wrapper, separado del
+  // <img> que tiene su propio zoom continuo vía CSS para no pisarse el
+  // transform entre sí).
+  if (heroBgWrap && !reduceMotion) {
     let ticking = false;
     const update = () => {
       const y = window.scrollY;
-      heroBg.style.transform = `scale(1.15) translateY(${Math.min(y * 0.18, 120)}px)`;
+      heroBgWrap.style.transform = `translateY(${Math.min(y * 0.18, 120)}px)`;
       ticking = false;
     };
     window.addEventListener(
