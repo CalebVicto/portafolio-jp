@@ -27,10 +27,14 @@ export function videoUrl(entry: VideoManifestEntry): string {
 }
 
 // La miniatura siempre es local (public/thumbs, liviano, sí va en git).
+// Usa el mismo slug ASCII que `asset` (sin tildes/espacios/carpetas): al
+// bajar el repo desde GitHub, Vercel normaliza a NFC los nombres de archivo
+// con acentos, mientras que este manifiesto guarda la forma NFD tal cual la
+// da el filesystem de macOS — con nombres acentuados eso rompe en producción
+// (funciona en local porque ahí sí coincide byte a byte con el disco).
 export function posterUrl(entry: VideoManifestEntry): string {
-  const base = entry.file.replace(/\.[^.]+$/, '');
-  const relPath = entry.folder === '.' ? `${base}.jpg` : `${entry.folder}/${base}.jpg`;
-  return encodeURI(`/thumbs/${relPath}`);
+  const assetBase = entry.asset.replace(/\.[^.]+$/, '');
+  return `/thumbs/${assetBase}.jpg`;
 }
 
 export function findEntry(folderHint: string, match: string): VideoManifestEntry | null {
